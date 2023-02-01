@@ -1,0 +1,113 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: String!
+  name: String!
+  email: String!
+  age: Int!
+  point: Int!
+}
+
+type RentsPayment {
+  id: String!
+  impUid: String!
+  amount: Int!
+  status: POINT_TRANSACTION_STATUS_ENUM!
+  user: User!
+  createdAt: DateTime!
+}
+
+enum POINT_TRANSACTION_STATUS_ENUM {
+  PAYMENT
+  CANCEL
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type RentChecktime {
+  id: String!
+  checkin: DateTime!
+  checkout: DateTime!
+}
+
+type RentLocation {
+  id: String!
+  location: String!
+}
+
+type RentTag {
+  id: String!
+  name: String!
+  rents: [Rent!]!
+}
+
+type Rent {
+  id: String!
+  name: String!
+  price: Int!
+  users: User!
+  rentLocation: RentLocation!
+  RentChecktime: RentChecktime!
+  rentPayment: RentsPayment!
+  rentCategories: [RentCategory!]!
+  rentTags: [RentTag!]!
+}
+
+type RentCategory {
+  id: String!
+  category: String!
+  rent: [Rent!]!
+}
+
+type Query {
+  fetchRents: [Rent!]!
+  fetchRent(rentId: String!): Rent!
+  fetchRentWithDelelted: [Rent!]!
+  fetchUser(email: String!): User!
+  fetchLoginUser: User!
+  fetchUsers: [User!]!
+}
+
+type Mutation {
+  login(email: String!, password: String!): String!
+  restoreAccessToken: String!
+  uploadFile(files: [Upload!]!): [String!]!
+  createRent(createRentInput: CreateRentInput!, imageUrl: [String!]!): Rent!
+  updateRent(rentId: String!, updateRentInput: UpdateRentInput!, imageUrl: [String!]!): Rent!
+  deleteRent(rentId: String!): Boolean!
+  restoreRent(rentId: String!): Boolean!
+  createUser(email: String!, password: String!, name: String!, age: Int!): User!
+  updateUser(email: String!, password: String!, name: String!, age: Int!): User!
+  updateUserPwd(password: String!): User!
+  deleteUser(email: String!): Boolean!
+  deleteLoginUser: Boolean!
+  restoreUser(email: String!): Boolean!
+  createRentPayment(impUid: String!, amount: Int!): RentsPayment!
+  cancelRentPayment(impUid: String!, amount: Int!): RentsPayment!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CreateRentInput {
+  name: String!
+  price: Int!
+  rentLocation: RentLocationInput!
+  rentTags: [String!]!
+}
+
+input RentLocationInput {
+  location: String!
+}
+
+input UpdateRentInput {
+  name: String
+  price: Int
+  rentLocation: RentLocationInput
+  rentTags: [String!]
+}
